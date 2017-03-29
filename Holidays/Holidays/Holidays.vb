@@ -205,4 +205,9 @@ Public Class Holidays
 
     End Sub
 
+    Private Sub btnClear_Click(sender As System.Object, e As System.EventArgs) Handles btnClear.Click
+
+        ClearTextboxes()
+
+    End Sub
 End Class
