@@ -1,0 +1,8 @@
+0
+1   Elliot                                            Wales                                             Newport                                           3                                                 
+2   a                                                 c                                                 b                                                 3                                                 
+3   1                                                 3                                                 2                                                 4                                                 
+4   7                                                 7                                                 7                                                 2                                                 
+5   QQ                                                QQ                                                QQ                                                4                                                 
+6   NOICE                                             NOICE                                             NOICE                                             3                                                 
+7   N                                                 NOICE                                             NOICE                                             3                                                 
