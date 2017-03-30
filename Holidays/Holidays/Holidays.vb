@@ -14,6 +14,8 @@ Public Class Holidays
 
     Private Sub Holidays_Load() Handles MyBase.Load
 
+        Customers.Show()
+
         txtHolidayID.Enabled = False
 
         If Dir$("Holidays.txt") = "" Then
@@ -82,54 +84,82 @@ Public Class Holidays
 
     Private Sub cmdSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSearch.Click
 
+        If chkSaveMode.Checked = True Then
+
+            MsgBox("You must untick save mode if you would like to search data.")
+
+            Exit Sub
+
+        End If
+
         Dim HolidayData() As String = File.ReadAllLines("Holidays.txt")
 
-        Dim HolidayIDFound As Integer
+        Dim HolidayFound As Boolean
         Dim HolidayCount As Integer
         Dim FoundHoliday As Integer
 
-        HolidayIDFound = False
+        HolidayFound = False
         HolidayCount = 0
 
         For i = 0 To UBound(HolidayData)
 
-            If Trim(Mid(HolidayData(i), 1, 4)) = txtHolidayID.Text Then
+            If txtHolidayID.Text <> "" Then
 
-                HolidayIDFound = True
+                If Trim(Mid(HolidayData(i), 1, 4)) = txtHolidayID.Text Then
 
-                txtHolidayID.Text = Trim(Mid(HolidayData(i), 1, 4))
-                txtHolidayName.Text = Trim(Mid(HolidayData(i), 5, 50))
-                txtLocation.Text = Trim(Mid(HolidayData(i), 55, 50))
-                txtHolidayType.Text = Trim(Mid(HolidayData(i), 105, 50))
-                txtRating.Text = Trim(Mid(HolidayData(i), 155, 50))
+                    MsgBox("A holiday with this Holiday ID has been found.")
 
-                MsgBox("A holiday with this Holiday ID has been found.")
+                    HolidayFound = True
 
-                Exit For
+                    txtHolidayID.Text = Trim(Mid(HolidayData(i), 1, 4))
+                    txtHolidayName.Text = Trim(Mid(HolidayData(i), 5, 50))
+                    txtLocation.Text = Trim(Mid(HolidayData(i), 55, 50))
+                    txtHolidayType.Text = Trim(Mid(HolidayData(i), 105, 50))
+                    txtRating.Text = Trim(Mid(HolidayData(i), 155, 50))
 
-            ElseIf (Trim(Mid(HolidayData(i), 5, 50)) = txtHolidayName.Text Or txtHolidayName.Text = "") And (Trim(Mid(HolidayData(i), 55, 50)) = txtLocation.Text Or txtLocation.Text = "") And (Trim(Mid(HolidayData(i), 105, 50)) = txtHolidayType.Text Or txtHolidayType.Text = "") And (Trim(Mid(HolidayData(i), 155, 50)) = txtRating.Text Or txtRating.Text = "") Then
+                End If
 
-                FoundHoliday = i
+            Else
 
-                HolidayCount = HolidayCount + 1
+                If (Trim(Mid(HolidayData(i), 5, 50)) = txtHolidayName.Text Or txtHolidayName.Text = "") And (Trim(Mid(HolidayData(i), 55, 50)) = txtLocation.Text Or txtLocation.Text = "") And (Trim(Mid(HolidayData(i), 105, 50)) = txtHolidayType.Text Or txtHolidayType.Text = "") And (Trim(Mid(HolidayData(i), 155, 50)) = txtRating.Text Or txtRating.Text = "") Then
+
+                    FoundHoliday = i
+
+                    HolidayCount = HolidayCount + 1
+
+                End If
 
             End If
 
         Next i
 
-        If HolidayCount = 1 Then
+        If txtHolidayID.Text = "" Then
 
-            MsgBox("One holiday was found.")
+            If HolidayCount = 1 Then
 
-            txtHolidayID.Text = Trim(Mid(HolidayData(FoundHoliday), 1, 4))
-            txtHolidayName.Text = Trim(Mid(HolidayData(FoundHoliday), 5, 50))
-            txtLocation.Text = Trim(Mid(HolidayData(FoundHoliday), 55, 50))
-            txtHolidayType.Text = Trim(Mid(HolidayData(FoundHoliday), 105, 50))
-            txtRating.Text = Trim(Mid(HolidayData(FoundHoliday), 155, 50))
+                MsgBox("One holiday was found.")
 
-        ElseIf HolidayIDFound = False Then
+                txtHolidayID.Text = Trim(Mid(HolidayData(FoundHoliday), 1, 4))
+                txtHolidayName.Text = Trim(Mid(HolidayData(FoundHoliday), 5, 50))
+                txtLocation.Text = Trim(Mid(HolidayData(FoundHoliday), 55, 50))
+                txtHolidayType.Text = Trim(Mid(HolidayData(FoundHoliday), 105, 50))
+                txtRating.Text = Trim(Mid(HolidayData(FoundHoliday), 155, 50))
 
-            MsgBox("There were " & HolidayCount & " holidays found.")
+                Exit Sub
+
+            Else
+
+                MsgBox("There were " & HolidayCount & " holidays found.")
+
+            End If
+
+        End If
+
+        If txtHolidayID.Text <> "" And HolidayFound = False Then
+
+            MsgBox("A holiday with this Holiday ID has not been found.")
+
+            ClearTextboxes()
 
         End If
 
@@ -210,4 +240,5 @@ Public Class Holidays
         ClearTextboxes()
 
     End Sub
+
 End Class
